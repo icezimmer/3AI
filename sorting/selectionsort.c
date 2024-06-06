@@ -1,5 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
+// Funzione per generare un array casuale
+void generateRandomArray(int *arr, int size) {
+    for(int i = 0; i < size; i++) {
+        arr[i] = rand() % 100; // Numeri casuali tra 0 e 99
+    }
+}
+
+
 
 /* Selection Sort come visto a lezione.
  * Tempo: O(n^2)
@@ -32,26 +42,27 @@ int main(void) {
     int *array;
     int n;
     int i;
+    
+    printf("Inserisci la dimensione dell'array: ");
+    scanf("%d", &n);
 
-    printf("Quanti elementi nell'array? ");
-    scanf("%i", &n);
+    array = (int *)malloc(n * sizeof(int));
 
-    /* Creazione dell'array */
-    array = malloc(n * sizeof(int));
+    // Genera array casuale
+    srand(time(0));
+    generateRandomArray(array, n);
 
-    /* Aggiunta degli elementi nell'array */
-    for(i=0;i<n;i++) {
-        scanf("%i", &array[i]);
-    }
-
-    /* Ordinamento dell'array (passiamo la dimensione) */
+    // Misura il tempo di ordinamento
+    clock_t start, end;
+    double cpu_time_used;
+    
+    start = clock();
     selection_sort(array, n);
+    end = clock();
+    
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
-    printf("Array Ordinato:\n");
-
-    for(i=0;i<n;i++) {
-        printf("%i\n", array[i]);
-    }
+    printf("Tempo di ordinamento: %f secondi\n", cpu_time_used);
 
     /* Deallocazione della memoria occupata dall'array */
     free(array);
